@@ -15,7 +15,7 @@ package
 		public function Flatlander()
 		{
 			// Create Flixel Game.
-			super(640, 480, PlayState, 3);
+			super(320, 240, PlayState, 2);
 		}
 	}
 }

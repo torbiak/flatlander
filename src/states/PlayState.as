@@ -44,6 +44,7 @@ package states
 		override public function update():void
 		{
 			FlxU.collide(playerGroup, mapGroup);
+			FlxG.follow(player);
 			super.update();	
 		}
 		public function initPlayer():void
