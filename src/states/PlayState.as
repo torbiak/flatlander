@@ -1,5 +1,6 @@
 package states
 {
+	import groups.Tilemap;
     import sprites.GameAssets;
 	
     import org.flixel.FlxSprite;
@@ -23,7 +24,9 @@ package states
          */
         override public function create():void
         {
-			
+			// Create the BG sprite
+            var bg:FlxGroup = new Tilemap();
+            add(bg);
         }
  
     }

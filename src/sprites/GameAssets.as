@@ -6,10 +6,10 @@ package sprites
 	 */
 	public class GameAssets 
 	{
-		[Embed(source="../assets/grass.PNG")]
-		public static var GrassSprite:Class;
+		[Embed(source="../../assets/tiles.png")]
+		public static var TilesSprite:Class;
 
-		[Embed(source="../assets/stickMan.PNG")]
+		[Embed(source="../../assets/stickMan.PNG")]
 		public static var PlayerSprite:Class;
 		
 		public function GameAssets() 

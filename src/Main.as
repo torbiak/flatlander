@@ -4,7 +4,7 @@ package
  
     import org.flixel.FlxGame;
  
-    [SWF(width="480", height="800", backgroundColor="#000000")]
+    [SWF(width="640", height="480", backgroundColor="#000000")]
     [Frame(factoryClass="Preloader")]
  
     public class Main extends FlxGame
@@ -15,7 +15,7 @@ package
         public function Main()
         {
             // Create Flixel Game.
-            super(480, 800, PlayState, 1);
+            super(640, 480, PlayState, 2);
         }
     }
 }
