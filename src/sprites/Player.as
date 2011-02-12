@@ -4,7 +4,8 @@ package sprites
     
 	public class Player extends FlxSprite
     {
-        [Embed(source = "../../assets/stickMan.png")] private var PlayerImage:Class;
+		[Embed(source = "../../assets/stickMan.png")]
+		private static var PlayerImage:Class;
 
         public function Player(X:Number = 0, Y:Number = 0):void
         {

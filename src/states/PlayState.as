@@ -1,6 +1,5 @@
 package states
 {
-    import sprites.GameAssets;
 	import sprites.Player;
 	
     import org.flixel.FlxSprite;
@@ -11,8 +10,11 @@ package states
     public class PlayState extends FlxState
     {	
 		private const TILE_SIZE:int = 16;
-		[Embed(source = '../../assets/map.txt', mimeType = "application/octet-stream")] private var Map:Class;
-		
+		[Embed(source = '../../assets/map.txt', mimeType = "application/octet-stream")]
+		private static var Map:Class;
+		[Embed(source="../../assets/tiles.png")]
+		public static var Tiles:Class;
+
 		public var mapGroup:FlxGroup;
 		public var playerGroup:FlxGroup;
 		
@@ -56,7 +58,7 @@ package states
 			//init the tile map
             var map:FlxTilemap = new FlxTilemap();
 			map.drawIndex = 0;
-			map.loadMap(new Map(), GameAssets.TilesSprite, TILE_SIZE, TILE_SIZE);
+			map.loadMap(new Map(), Tiles, TILE_SIZE, TILE_SIZE);
 			
 			//add the tile map to the tile group/layer
 			mapGroup.add(map);
