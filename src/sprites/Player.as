@@ -27,6 +27,7 @@ package	sprites
 			
 			// Save an instance of the PlayState to help with collision detection and movement
 			state = FlxG.state as PlayState;
+			maxVelocity = new FlxPoint(300, 300);
 		}
 		
 		/**
@@ -38,7 +39,7 @@ package	sprites
 			acceleration.y = 0;
 			velocity.x = velocity.x * 0.95;
 			velocity.y = velocity.y * 0.95;
-			var speed = 350;
+			var speed:uint = 1000;
 			if (state.gameState == GameStates.PLAYING)
 			{
 				if (FlxG.keys.pressed("LEFT")){

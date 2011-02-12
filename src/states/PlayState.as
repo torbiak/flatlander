@@ -1,12 +1,10 @@
 package states
 {
-	import org.flixel.FlxGroup;
-	import org.flixel.FlxSprite;
-	import org.flixel.FlxState;
-	import org.flixel.FlxTilemap;
+	import constants.*;
+	
+	import org.flixel.*;
 	
 	import sprites.Player;
-	import constants.*;
  
     public class PlayState extends FlxState
     {	
@@ -18,6 +16,7 @@ package states
 
 		public var mapGroup:FlxGroup;
 		public var playerGroup:FlxGroup;
+		public var player:Player;
 		public var gameState:uint;
 		
         /**
@@ -42,25 +41,31 @@ package states
 			gameState = GameStates.PLAYING;
         }
 		
+		override public function update():void
+		{
+			FlxU.collide(playerGroup, mapGroup);
+			super.update();	
+		}
 		public function initPlayer():void
-    {	{
+		{
 			//init the player group/layer
 			playerGroup = new FlxGroup();
 			
 			//init the player
-			var player:Player = new Player(20, 50);
+			player = new Player(20, 50);
 			
 			//add the player sprite to the player group/layer
 			playerGroup.add(player);
-    }	}
+   		}
 		
-		private function initMap():void
+		public function initMap():void
 		{
 			//init the map group/layer
 			mapGroup = new FlxGroup();
 			
 			//init the tile map
             var map:FlxTilemap = new FlxTilemap();
+			map.collideIndex = 2;
 			map.drawIndex = 0;
 			map.loadMap(new Map(), Tiles, TILE_SIZE, TILE_SIZE);
 			
