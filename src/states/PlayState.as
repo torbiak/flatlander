@@ -1,11 +1,12 @@
 package states
 {
-	import sprites.Player;
-	
-    import org.flixel.FlxSprite;
-    import org.flixel.FlxState;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxSprite;
+	import org.flixel.FlxState;
 	import org.flixel.FlxTilemap;
+	
+	import sprites.Player;
+	import constants.*;
  
     public class PlayState extends FlxState
     {	
@@ -17,6 +18,7 @@ package states
 
 		public var mapGroup:FlxGroup;
 		public var playerGroup:FlxGroup;
+		public var gameState:uint;
 		
         /**
          * This is the main level of Frogger.
@@ -36,6 +38,8 @@ package states
 			
 			initPlayer();
 			add(playerGroup);
+			
+			gameState = GameStates.PLAYING;
         }
 		
 		public function initPlayer():void
