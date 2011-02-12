@@ -17,7 +17,7 @@ package	sprites
 		private var animationFrames:int = 1;
 		private var state:PlayState;
 		public var isMoving:Boolean;
-		[Embed(source="../assets/stickMan.PNG")]
+		[Embed(source="../../assets/stickMan.PNG")]
 		public static var PlayerImage:Class;
 		
 		public function Player(X:Number, Y:Number)
