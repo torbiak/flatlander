@@ -1,0 +1,9 @@
+# Can ignore specific files
+bin/
+bin-debug/
+html-template/
+src/flixel/
+
+# Use wildcards as well
+*.as3proj
+.*
