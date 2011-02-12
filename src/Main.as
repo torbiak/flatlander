@@ -1,27 +1,21 @@
-package 
+package
 {
-	import flash.display.Sprite;
-	import flash.events.Event;
-	
-	/**
-	 * ...
-	 * @author Akerboom
-	 */
-	public class Main extends Sprite 
-	{
-		
-		public function Main():void 
-		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
-		private function init(e:Event = null):void 
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
-		}
-		
-	}
-	
+    import states.PlayState;
+ 
+    import org.flixel.FlxGame;
+ 
+    [SWF(width="480", height="800", backgroundColor="#000000")]
+    [Frame(factoryClass="Preloader")]
+ 
+    public class Main extends FlxGame
+    {
+        /**
+         * This is the main game constructor.
+         */
+        public function Main()
+        {
+            // Create Flixel Game.
+            super(480, 800, PlayState, 1);
+        }
+    }
 }
