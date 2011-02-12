@@ -1,0 +1,5 @@
+# Can ignore specific files
+bin
+
+# Use wildcards as well
+*.as3proj
