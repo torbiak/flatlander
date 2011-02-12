@@ -1,6 +1,7 @@
 package states
 {
     import sprites.GameAssets;
+	import sprites.Player;
 	
     import org.flixel.FlxSprite;
     import org.flixel.FlxState;
@@ -13,6 +14,7 @@ package states
 		[Embed(source = '../../assets/map.txt', mimeType = "application/octet-stream")] private var Map:Class;
 		
 		public var mapGroup:FlxGroup;
+		public var playerGroup:FlxGroup;
 		
         /**
          * This is the main level of Frogger.
@@ -20,7 +22,6 @@ package states
         public function PlayState()
         {
             super();
-			mapGroup = new FlxGroup();
         }
  
         /**
@@ -28,17 +29,36 @@ package states
          */
         override public function create():void
         {
-			// Create the BG sprite
             initMap();
 			add(mapGroup);
+			
+			initPlayer();
+			add(playerGroup);
         }
+		
+		public function initPlayer():void
+    {	{
+			//init the player group/layer
+			playerGroup = new FlxGroup();
+			
+			//init the player
+			var player:Player = new Player(20, 50);
+			
+			//add the player sprite to the player group/layer
+			playerGroup.add(player);
+    }	}
 		
 		private function initMap():void
 		{
-			// Create the BG sprite
+			//init the map group/layer
+			mapGroup = new FlxGroup();
+			
+			//init the tile map
             var map:FlxTilemap = new FlxTilemap();
 			map.drawIndex = 0;
 			map.loadMap(new Map(), GameAssets.TilesSprite, TILE_SIZE, TILE_SIZE);
+			
+			//add the tile map to the tile group/layer
 			mapGroup.add(map);
 		}
  
