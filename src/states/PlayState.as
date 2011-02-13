@@ -10,12 +10,15 @@ package states
     {	
 		public const TILE_SIZE_X:int = 16;
 		public const TILE_SIZE_Y:int = 16;
-		[Embed(source = '../../assets/map.txt', mimeType = "application/octet-stream")]
+		[Embed(source = '../../assets/100x100map.txt', mimeType = "application/octet-stream")]
 		private static var Map:Class;
 		[Embed(source="../../assets/tiles.png")]
 		public static var Tiles:Class;
+		[Embed(source="../../assets/minimapTiles.png")]
+		public static var MiniTiles:Class;
 
 		public var map:FlxTilemap;
+		public var miniMap:FlxTilemap;
 		public var overlay:GrassOverlay;
 		public var player:Player;
 		public var gameState:uint;
@@ -39,6 +42,8 @@ package states
             initMap();
 			initPlayer();
 			
+			add(miniMap);
+			
 			gameState = GameStates.PLAYING;
         }
 		
@@ -52,7 +57,8 @@ package states
 			FlxU.collide(map, player);
 
 			FlxG.follow(player);
-			if (FlxG.keys.justPressed("B"))FlxG.showBounds = !FlxG.showBounds;
+			if (FlxG.keys.justPressed("B")) FlxG.showBounds = !FlxG.showBounds;
+			if (FlxG.keys.justPressed("M")) miniMap.visible = !miniMap.visible;
 			super.update();
 		}
 
@@ -71,6 +77,14 @@ package states
 			add(map);
 			overlay = new GrassOverlay(map);
 			add(overlay.map);
+			
+			miniMap = new FlxTilemap();
+			miniMap.drawIndex = 0;
+			miniMap.loadMap(new Map(), MiniTiles, 1, 1);
+			miniMap.visible = false;
+			miniMap.scrollFactor.x = 0;
+			miniMap.scrollFactor.y = 0;
+			
 		}
 		
 		public function tileCoordsOfPlayer():FlxPoint
@@ -108,6 +122,7 @@ package states
 			var remains:int = Materials.remains(tileKind);
 			if (remains != Materials.NOTHING){
 				map.setTile(pos.x, pos.y, remains);
+				miniMap.setTile(pos.x, pos.y, remains);
 				overlay.updateTile(pos.x, pos.y);
 			}
 			return Materials.held(tileKind);
@@ -120,6 +135,7 @@ package states
 			var tileBecomes:int = Materials.dropped(held, tileKind);
 			if (tileBecomes != Materials.NOTHING){
 				map.setTile(pos.x, pos.y, tileBecomes);
+				miniMap.setTile(pos.x, pos.y, tileBecomes);
 				overlay.updateTile(pos.x, pos.y);
 			}
 			return tileBecomes;
