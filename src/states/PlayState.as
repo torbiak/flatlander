@@ -28,6 +28,7 @@ package states
         public function PlayState()
         {
             super();
+			FlxG.framerate = 30;
         }
  
         /**
@@ -52,7 +53,7 @@ package states
 
 			FlxG.follow(player);
 			if (FlxG.keys.justPressed("B"))FlxG.showBounds = !FlxG.showBounds;
-			super.update();	
+			super.update();
 		}
 
 		public function initPlayer():void
