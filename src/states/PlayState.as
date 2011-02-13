@@ -64,7 +64,7 @@ package states
 		public function initMap():void
 		{
             map = new FlxTilemap();
-			map.collideIndex = 2;
+			map.collideIndex = 4;
 			map.drawIndex = 0;
 			map.loadMap(new Map(), Tiles, TILE_SIZE_X, TILE_SIZE_Y);
 			add(map);
