@@ -58,7 +58,6 @@ package states
 		{
 			player = new Player(20, 50);
 			add(player);
-			add(player.heldMaterial);
    		}
 		
 		public function initMap():void
@@ -98,18 +97,26 @@ package states
 			return map.getTile(tileCoordsFaced.x, tileCoordsFaced.y) >= map.drawIndex;
 		}
 
-		public function pickup():uint
+		public function pickup():int
 		{
-			var target:FlxPoint = tileCoordsPlayerIsFacing();
-			var tileType:uint = map.getTile(target.x, target.y);
-			map.setTile(target.x, target.y, 1);
-			return tileType;
+			var pos:FlxPoint = tileCoordsFaced;
+			var tileKind:uint = map.getTile(pos.x, pos.y);
+			var remains:int = Materials.remains(tileKind);
+			if (remains != Materials.NOTHING){
+				map.setTile(pos.x, pos.y, remains);
+			}
+			return Materials.held(tileKind);
 		}
 		
-		public function drop():void
+		public function drop(held:int):int
 		{
-			
+			var pos:FlxPoint = tileCoordsFaced;
+			var tileKind:uint = map.getTile(pos.x, pos.y);
+			var tileBecomes:int = Materials.dropped(held, tileKind);
+			if (tileBecomes != Materials.NOTHING){
+				map.setTile(pos.x, pos.y, tileBecomes);
+			}
+			return tileBecomes;
 		}
- 
     }
 }

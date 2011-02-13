@@ -1,6 +1,6 @@
 package	sprites
 {
-	import constants.GameStates;
+	import constants.*;
 	
 	import org.flixel.*;
 	
@@ -33,7 +33,8 @@ package	sprites
             width = 12;
             height = 12;
             offset = new FlxPoint(2, 2);
-            heldMaterial = new HeldMaterial(x, y, 0);
+            heldMaterial = new HeldMaterial(x, y, Materials.NOTHING);
+            state.add(heldMaterial);
 		}
 
 		override public function update():void
@@ -83,19 +84,25 @@ package	sprites
 
         public function pickup():void
         {
-            if (!heldMaterial.exists){
+            if (heldMaterial.kind == Materials.NOTHING){
                 heldMaterial.kind = state.pickup();
-                heldMaterial.exists = true;
             }
         }
 
         public function drop():void
         {
-            if (heldMaterial.exists){
-                heldMaterial.exists = false;
+            trace("dropping: ", heldMaterial.kind);
+            if (heldMaterial.kind != Materials.NOTHING){
+                if (state.drop(heldMaterial.kind) != Materials.NOTHING){
+                    trace("dropped: ", heldMaterial.kind)
+                    heldMaterial.kind = Materials.NOTHING;
+                    trace("now has: ", heldMaterial.kind);
+                    return;
+                }
             }
+            trace("can't drop");
         }
-		
+
 		/**
 		 * Simply plays the death animation
 		 */
