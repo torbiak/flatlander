@@ -72,10 +72,11 @@ package	sprites
                     isMoving = true;
 				}
 				if (FlxG.keys.justPressed("Z")){
-					pickup();
-				}
-				if (FlxG.keys.justPressed("X")){
-					drop();
+                    if (heldMaterial.kind == Materials.NOTHING){
+                        pickup();
+                    } else {
+                        drop();
+                    }
 				}
 			}
 			//Default object physics update
@@ -91,16 +92,12 @@ package	sprites
 
         public function drop():void
         {
-            trace("dropping: ", heldMaterial.kind);
             if (heldMaterial.kind != Materials.NOTHING){
                 if (state.drop(heldMaterial.kind) != Materials.NOTHING){
-                    trace("dropped: ", heldMaterial.kind)
                     heldMaterial.kind = Materials.NOTHING;
-                    trace("now has: ", heldMaterial.kind);
                     return;
                 }
             }
-            trace("can't drop");
         }
 
 		/**
