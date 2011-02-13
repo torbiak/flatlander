@@ -14,8 +14,10 @@ package states
 		private static var Map:Class;
 		[Embed(source="../../assets/tiles.png")]
 		public static var Tiles:Class;
-		[Embed(source="../../assets/minimapTiles.png")]
+		[Embed(source = "../../assets/minimapTiles.png")]
 		public static var MiniTiles:Class;
+		[Embed(source="../../assets/particleSheet.png")]
+		public static var Particles:Class;
 
 		public var waterFlowCounter:Number = 0;
 		public var map:FlxTilemap;
@@ -26,6 +28,7 @@ package states
 		public var tileCoords:FlxPoint;
 		public var tileCoordsFaced:FlxPoint;
 		public var flowingWaterCoords:Array;
+		public var emitter:FlxEmitter;
 		
         /**
          * This is the main level of Frogger.
@@ -43,6 +46,7 @@ package states
         {
             initMap();
 			initPlayer();
+			initEmitter();
 			
 			add(miniMap);
 			flowingWaterCoords = [];
@@ -67,6 +71,11 @@ package states
 			FlxG.follow(player);
 			if (FlxG.keys.justPressed("B")) FlxG.showBounds = !FlxG.showBounds;
 			if (FlxG.keys.justPressed("M")) miniMap.visible = !miniMap.visible;
+			if (FlxG.keys.justPressed("W")) {
+				emitter.x = player.x + 8;
+				emitter.y = player.y + 8;
+				emitter.start();
+			}
 			super.update();
 		}
 
@@ -93,6 +102,24 @@ package states
 			miniMap.scrollFactor.x = 0;
 			miniMap.scrollFactor.y = 0;
 			
+		}
+		
+		public function initEmitter()
+		{
+			const splashVel = 70;
+			
+			emitter = new FlxEmitter();
+
+			emitter.createSprites(Particles, 20);
+			emitter.gravity = 0;
+			emitter.delay = 0.2;
+			emitter.maxParticleSpeed.x = splashVel;
+			emitter.maxParticleSpeed.y = splashVel;
+			emitter.minParticleSpeed.x = -splashVel;
+			emitter.minParticleSpeed.y = -splashVel;
+			//emitter.particleDrag = new FlxPoint(0, 0);
+			
+			add(emitter);
 		}
 		
 		public function tileCoordsOfPlayer():FlxPoint
