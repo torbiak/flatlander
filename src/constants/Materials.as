@@ -15,7 +15,7 @@ package constants
 		public static function held(tileKind:uint):int
 		{
 			var lu:Array = [];
-			lu[GRASS] = DIRT;
+			lu[GRASS] = GRASS;
 			lu[DIRT] = DIRT;
 			lu[WATER] = WATER;
 			lu[HOLE] = NOTHING;
@@ -45,6 +45,15 @@ package constants
 		public static function dropped(held:uint, tileKind:uint):int
 		{
 			var lu:Array = [];
+			lu[GRASS] = [];
+			lu[GRASS][GRASS] = GRASS;
+			lu[GRASS][DIRT] = GRASS;
+			lu[GRASS][WATER] = WATER;
+			lu[GRASS][TREE] = NOTHING;
+			lu[GRASS][ROCK] = NOTHING;
+			lu[GRASS][HOLE] = GRASS;
+			lu[GRASS][WALL] = NOTHING;
+
 			lu[DIRT] = [];
 			lu[DIRT][GRASS] = DIRT;
 			lu[DIRT][DIRT] = DIRT;
