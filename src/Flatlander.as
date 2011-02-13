@@ -16,6 +16,7 @@ package
 		{
 			// Create Flixel Game.
 			super(640/2, 480/2, PlayState, 2);
+
 		}
 	}
 }
