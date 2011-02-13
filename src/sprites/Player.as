@@ -17,7 +17,7 @@ package	sprites
 		private var animationFrames:int = 1;
 		private var state:PlayState;
 		public var isMoving:Boolean;
-		[Embed(source="../../assets/stickMan.PNG")]
+		[Embed(source="../../assets/player.png")]
 		public static var PlayerImage:Class;
 		
 		public function Player(X:Number, Y:Number)
@@ -44,15 +44,19 @@ package	sprites
 			{
 				if (FlxG.keys.pressed("LEFT")){
 					acceleration.x -= speed;
+					frame = 2;
 				}
 				if (FlxG.keys.pressed("RIGHT")){
 					acceleration.x += speed;
+					frame = 1;
 				}
 				if (FlxG.keys.pressed("UP")){
 					acceleration.y -= speed;
+					frame = 3;
 				}
 				if (FlxG.keys.pressed("DOWN")){
 					acceleration.y += speed;
+					frame = 0;
 				}
 			}
 			//Default object physics update
