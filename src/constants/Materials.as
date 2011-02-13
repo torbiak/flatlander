@@ -52,6 +52,7 @@ package constants
 			lu[DIRT][TREE] = NOTHING;
 			lu[DIRT][ROCK] = NOTHING;
 			lu[DIRT][HOLE] = DIRT;
+			lu[DIRT][WALL] = NOTHING;
 
 			lu[WATER] = [];
 			lu[WATER][GRASS] = GRASS;
@@ -60,6 +61,7 @@ package constants
 			lu[WATER][TREE] = TREE;
 			lu[WATER][ROCK] = ROCK;
 			lu[WATER][HOLE] = WATER;
+			lu[WATER][WALL] = NOTHING;
 
 			lu[TREE] = [];
 			lu[TREE][GRASS] = TREE;
@@ -68,6 +70,7 @@ package constants
 			lu[TREE][TREE] = NOTHING;
 			lu[TREE][ROCK] = NOTHING;
 			lu[TREE][HOLE] = TREE;
+			lu[TREE][WALL] = NOTHING;
 
 			lu[ROCK] = [];
 			lu[ROCK][GRASS] = ROCK;
@@ -76,6 +79,7 @@ package constants
 			lu[ROCK][TREE] = NOTHING;
 			lu[ROCK][ROCK] = NOTHING;
 			lu[ROCK][HOLE] = ROCK;
+			lu[ROCK][WALL] = NOTHING;
 
 			trace('held: ', held, ' tile: ', tileKind, ' dropped: ', lu[held][tileKind]);
 			return lu[held][tileKind];

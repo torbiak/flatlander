@@ -33,7 +33,7 @@ package
 			base = sourceMap;
 		}
 		
-		public function updateTile(x:int, y:int)
+		public function updateTile(x:int, y:int):void
 		{
 			for (var j:int = y * 2; j < y * 2 + 2; j++) {
 				for (var i:int = x * 2; i < x * 2 + 2; i++) {
