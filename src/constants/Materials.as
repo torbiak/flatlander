@@ -22,7 +22,6 @@ package constants
 			lu[TREE] = TREE;
 			lu[ROCK] = ROCK
 			lu[WALL] = ROCK;
-			trace('tile: ', tileKind, ' picked: ', lu[tileKind]);
 			return lu[tileKind];
 		}
 
@@ -37,7 +36,6 @@ package constants
 			lu[TREE] = GRASS;
 			lu[ROCK] = GRASS;
 			lu[WALL] = WALL;
-			trace('tile: ', tileKind, ' remains: ', lu[tileKind]);
 			return lu[tileKind];
 		}
 
@@ -90,7 +88,6 @@ package constants
 			lu[ROCK][HOLE] = ROCK;
 			lu[ROCK][WALL] = NOTHING;
 
-			trace('held: ', held, ' tile: ', tileKind, ' dropped: ', lu[held][tileKind]);
 			return lu[held][tileKind];
 		}
 	}
