@@ -37,22 +37,22 @@ package	sprites
 		{
 			acceleration.x = 0;
 			acceleration.y = 0;
-			velocity.x = velocity.x * 0.95;
-			velocity.y = velocity.y * 0.95;
+			drag.x = 1000;
+			drag.y = 1000;
 			var speed:uint = 1000;
 			if (state.gameState == GameStates.PLAYING)
 			{
 				if (FlxG.keys.pressed("LEFT")){
-					acceleration.x -= speed;
+					acceleration.x = -speed;
 				}
 				if (FlxG.keys.pressed("RIGHT")){
-					acceleration.x += speed;
+					acceleration.x = speed;
 				}
 				if (FlxG.keys.pressed("UP")){
-					acceleration.y -= speed;
+					acceleration.y = -speed;
 				}
 				if (FlxG.keys.pressed("DOWN")){
-					acceleration.y += speed;
+					acceleration.y = speed;
 				}
 			}
 			//Default object physics update

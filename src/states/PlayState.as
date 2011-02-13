@@ -43,6 +43,7 @@ package states
 		
 		override public function update():void
 		{
+			FlxU.setWorldBounds(-(FlxG.scroll.x), -(FlxG.scroll.y), FlxG.width, FlxG.height);
 			FlxU.collide(playerGroup, mapGroup);
 			FlxG.follow(player);
 			super.update();	
