@@ -17,8 +17,10 @@ package	sprites
 		private var animationFrames:int = 1;
 		private var state:PlayState;
 		public var isMoving:Boolean;
+        public var heldMaterial:HeldMaterial;
 		[Embed(source="../../assets/player.png")]
 		public static var PlayerImage:Class;
+
 		
 		public function Player(X:Number, Y:Number)
 		{
@@ -27,41 +29,72 @@ package	sprites
 			
 			// Save an instance of the PlayState to help with collision detection and movement
 			state = FlxG.state as PlayState;
-			maxVelocity = new FlxPoint(300, 300);
+			maxVelocity = new FlxPoint(120, 120);
+            width = 12;
+            height = 12;
+            offset = new FlxPoint(2, 2);
+            heldMaterial = new HeldMaterial(x, y, 0);
 		}
-		
-		/**
-		 * The main Frog update loop. This handles keyboard movement, collision and flagging id moving.
-		 */
+
 		override public function update():void
 		{
+			var mul:uint = 4;
 			acceleration.x = 0;
 			acceleration.y = 0;
-			drag.x = 1000;
-			drag.y = 1000;
-			var speed:uint = 1000;
+			drag.x = maxVelocity.x * (mul + 1);
+			drag.y = maxVelocity.y * (mul + 1);
 			if (state.gameState == GameStates.PLAYING)
 			{
+                var isMoving:Boolean = false;
 				if (FlxG.keys.pressed("LEFT")){
-					acceleration.x =  -speed;
-					frame = 2;
+					acceleration.x = -maxVelocity.x * mul;
+                    frame = 2;
+                    facing = LEFT;
+                    isMoving = true;
 				}
 				if (FlxG.keys.pressed("RIGHT")){
-					acceleration.x = speed;
-					frame = 1;
+					acceleration.x = maxVelocity.x * mul;
+                    frame = 1;
+                    facing = RIGHT;
+                    isMoving = true;
 				}
 				if (FlxG.keys.pressed("UP")){
-					acceleration.y = -speed;
-					frame = 3;
+					acceleration.y = -maxVelocity.y * mul;
+                    frame = 3;
+                    facing = UP;
+                    isMoving = true;
 				}
 				if (FlxG.keys.pressed("DOWN")){
-					acceleration.y = speed;
-					frame = 0;
+					acceleration.y = maxVelocity.y * mul;
+                    frame = 0;
+                    facing = DOWN;
+                    isMoving = true;
+				}
+				if (FlxG.keys.justPressed("Z")){
+					pickup();
+				}
+				if (FlxG.keys.justPressed("X")){
+					drop();
 				}
 			}
 			//Default object physics update
 			super.update();
 		}
+
+        public function pickup():void
+        {
+            if (!heldMaterial.exists){
+                heldMaterial.kind = state.pickup();
+                heldMaterial.exists = true;
+            }
+        }
+
+        public function drop():void
+        {
+            if (heldMaterial.exists){
+                heldMaterial.exists = false;
+            }
+        }
 		
 		/**
 		 * Simply plays the death animation
