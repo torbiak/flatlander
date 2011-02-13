@@ -16,6 +16,7 @@ package states
 		public static var Tiles:Class;
 
 		public var map:FlxTilemap;
+		public var overlay:GrassOverlay;
 		public var player:Player;
 		public var gameState:uint;
 		public var tileCoords:FlxPoint;
@@ -68,6 +69,8 @@ package states
 			map.drawIndex = 0;
 			map.loadMap(new Map(), Tiles, TILE_SIZE_X, TILE_SIZE_Y);
 			add(map);
+			overlay = new GrassOverlay(map);
+			add(overlay.map);
 		}
 		
 		public function tileCoordsOfPlayer():FlxPoint
@@ -103,6 +106,7 @@ package states
 			var target:FlxPoint = tileCoordsPlayerIsFacing();
 			var tileType:uint = map.getTile(target.x, target.y);
 			map.setTile(target.x, target.y, 1);
+			overlay.updateTile(target.x, target.y);
 			return tileType;
 		}
 		
