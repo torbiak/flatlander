@@ -1,6 +1,6 @@
 package	sprites
 {
-	import constants.GameStates;
+	import constants.*;
 	
 	import org.flixel.*;
 	
@@ -35,15 +35,20 @@ package	sprites
 			super.update();
 		}
 
-		public function get kind():uint
+		public function get kind():int
 		{
 			return _kind;
 		}
 
-		public function set kind(materialKind:uint):void
+		public function set kind(materialKind:int):void
 		{
-			frame = materialKind;
 			_kind = materialKind;
+			if (materialKind != Materials.NOTHING){
+				frame = materialKind;
+				exists = true;
+			} else {
+				exists = false;
+			}
 		}
 	}
 }
