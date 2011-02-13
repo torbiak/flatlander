@@ -15,14 +15,13 @@ package constants
 		public static function held(tileKind:uint):int
 		{
 			var lu:Array = [];
-			lu[GRASS] = DIRT;
+			lu[GRASS] = GRASS;
 			lu[DIRT] = DIRT;
 			lu[WATER] = WATER;
 			lu[HOLE] = NOTHING;
 			lu[TREE] = TREE;
 			lu[ROCK] = ROCK
 			lu[WALL] = ROCK;
-			trace('tile: ', tileKind, ' picked: ', lu[tileKind]);
 			return lu[tileKind];
 		}
 
@@ -37,7 +36,6 @@ package constants
 			lu[TREE] = GRASS;
 			lu[ROCK] = GRASS;
 			lu[WALL] = WALL;
-			trace('tile: ', tileKind, ' remains: ', lu[tileKind]);
 			return lu[tileKind];
 		}
 
@@ -45,6 +43,15 @@ package constants
 		public static function dropped(held:uint, tileKind:uint):int
 		{
 			var lu:Array = [];
+			lu[GRASS] = [];
+			lu[GRASS][GRASS] = GRASS;
+			lu[GRASS][DIRT] = GRASS;
+			lu[GRASS][WATER] = WATER;
+			lu[GRASS][TREE] = NOTHING;
+			lu[GRASS][ROCK] = NOTHING;
+			lu[GRASS][HOLE] = GRASS;
+			lu[GRASS][WALL] = NOTHING;
+
 			lu[DIRT] = [];
 			lu[DIRT][GRASS] = DIRT;
 			lu[DIRT][DIRT] = DIRT;
@@ -81,7 +88,6 @@ package constants
 			lu[ROCK][HOLE] = ROCK;
 			lu[ROCK][WALL] = NOTHING;
 
-			trace('held: ', held, ' tile: ', tileKind, ' dropped: ', lu[held][tileKind]);
 			return lu[held][tileKind];
 		}
 	}
