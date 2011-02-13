@@ -15,12 +15,14 @@ package states
 		[Embed(source="../../assets/tiles.png")]
 		public static var Tiles:Class;
 
+		public var waterFlowCounter:Number = 0;
 		public var map:FlxTilemap;
 		public var overlay:GrassOverlay;
 		public var player:Player;
 		public var gameState:uint;
 		public var tileCoords:FlxPoint;
 		public var tileCoordsFaced:FlxPoint;
+		public var flowingWaterCoords:Array;
 		
         /**
          * This is the main level of Frogger.
@@ -39,11 +41,18 @@ package states
             initMap();
 			initPlayer();
 			
+			flowingWaterCoords = [];
 			gameState = GameStates.PLAYING;
+			FlxG.followBounds(0, 0, map.widthInTiles * TILE_SIZE_X, map.heightInTiles * TILE_SIZE_Y);
         }
 		
 		override public function update():void
 		{
+			waterFlowCounter += FlxG.elapsed;
+			if (waterFlowCounter > 0.5){
+				waterFlowCounter = 0;
+				flowWater();
+			}
 			tileCoords = tileCoordsOfPlayer();
 			tileCoordsFaced = tileCoordsPlayerIsFacing()
 
@@ -51,7 +60,7 @@ package states
 			FlxU.setWorldBounds(-(FlxG.scroll.x), -(FlxG.scroll.y), FlxG.width, FlxG.height);
 			FlxU.collide(map, player);
 
-			FlxG.follow(player);
+			FlxG.follow(player, 2.5);
 			if (FlxG.keys.justPressed("B"))FlxG.showBounds = !FlxG.showBounds;
 			super.update();
 		}
@@ -101,14 +110,20 @@ package states
 			return map.getTile(tileCoordsFaced.x, tileCoordsFaced.y) >= map.drawIndex;
 		}
 
+		public function setTileMaterial(pos:FlxPoint, material:int):void
+		{
+			map.setTile(pos.x, pos.y, material);
+			overlay.updateTile(pos.x, pos.y);
+		}
+
 		public function pickup():int
 		{
 			var pos:FlxPoint = tileCoordsFaced;
 			var tileKind:uint = map.getTile(pos.x, pos.y);
 			var remains:int = Materials.remains(tileKind);
 			if (remains != Materials.NOTHING){
-				map.setTile(pos.x, pos.y, remains);
-				overlay.updateTile(pos.x, pos.y);
+				setTileMaterial(pos, remains);
+				registerFlowingWaterTile(pos);
 			}
 			return Materials.held(tileKind);
 		}
@@ -119,10 +134,59 @@ package states
 			var tileKind:uint = map.getTile(pos.x, pos.y);
 			var tileBecomes:int = Materials.dropped(held, tileKind);
 			if (tileBecomes != Materials.NOTHING){
-				map.setTile(pos.x, pos.y, tileBecomes);
-				overlay.updateTile(pos.x, pos.y);
+				setTileMaterial(pos, tileBecomes);
 			}
 			return tileBecomes;
 		}
+
+		private function registerFlowingWaterTile(pos:FlxPoint):void
+		{
+			trace("Checking for flow...");
+			var tileKind:int = map.getTile(pos.x, pos.y)
+			if (tileKind == Materials.WATER && adjacentTileOfMaterial(pos, Materials.HOLE)){
+				flowingWaterCoords.push(pos);
+				trace("Flowing water at: ", pos.x, " ", pos.y);
+			} else if (tileKind == Materials.HOLE){
+				var waterTile:FlxPoint = adjacentTileOfMaterial(pos, Materials.WATER);
+				if (waterTile){
+					flowingWaterCoords.push(waterTile);
+				}
+			}
+		}
+
+		private function adjacentTileOfMaterial(pos:FlxPoint, material:uint):FlxPoint
+		{
+			var offsets:Array = [-1, 1];
+			for (var i:String in offsets){
+				if (map.getTile(pos.x + offsets[i], pos.y) == material){
+					return new FlxPoint(pos.x + offsets[i], pos.y);
+				}
+				if (map.getTile(pos.x, pos.y + offsets[i]) == material){
+					return new FlxPoint(pos.x, pos.y + offsets[i]);
+				}
+			}
+			return null;
+		}
+
+
+		private function flowWater():void
+		{
+			var pos:FlxPoint;
+			var hole:FlxPoint;
+			var newFlowCoords:Array = [];
+			for (var i:String in flowingWaterCoords){
+				pos = flowingWaterCoords[i];
+				hole = adjacentTileOfMaterial(pos, Materials.HOLE);
+				while (hole){
+					setTileMaterial(hole, Materials.WATER);
+					if (adjacentTileOfMaterial(hole, Materials.HOLE)){
+						newFlowCoords.push(hole);
+					}
+					hole = adjacentTileOfMaterial(pos, Materials.HOLE);
+				}
+			}
+			flowingWaterCoords = newFlowCoords;
+		}
+
     }
 }

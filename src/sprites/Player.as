@@ -32,7 +32,7 @@ package	sprites
 			
 			// Save an instance of the PlayState to help with collision detection and movement
 			state = FlxG.state as PlayState;
-			maxVelocity = new FlxPoint(120, 120);
+			maxVelocity = new FlxPoint(60, 60);
             width = 12;
             height = 12;
             offset = new FlxPoint(2, 2);
