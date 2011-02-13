@@ -85,7 +85,9 @@ package	sprites
 
         public function pickup():void
         {
-            if (heldMaterial.kind == Materials.NOTHING){
+            if (heldMaterial.kind == Materials.NOTHING)
+			{
+				heldMaterial.tileCoords = state.tileCoordsPlayerIsFacing();
                 heldMaterial.kind = state.pickup();
             }
         }
@@ -93,7 +95,8 @@ package	sprites
         public function drop():void
         {
             if (heldMaterial.kind != Materials.NOTHING){
-                if (state.drop(heldMaterial.kind) != Materials.NOTHING){
+                if (state.drop(heldMaterial.kind) != Materials.NOTHING) {
+					heldMaterial.tileCoords = state.tileCoordsPlayerIsFacing();
                     heldMaterial.kind = Materials.NOTHING;
                     return;
                 }

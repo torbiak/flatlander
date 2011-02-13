@@ -8,6 +8,8 @@ package constants
 		public static const GAME_OVER:uint = 3; // Game is over
 		public static const DEATH_OVER:uint = 4; // A death animation is over
 		public static const LEVEL_OVER:uint = 5; // A level is over
+		public static const PICKUP:uint = 6;
+		public static const DROP:uint = 7;
 		
 		public function GameStates()
 		{
