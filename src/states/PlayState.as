@@ -21,6 +21,7 @@ package states
 		public static var Particles:Class;
 
 		public var waterFlowCounter:Number = 0;
+		public var waterFlowFullScanCounter:Number = 0;
 		public var map:FlxTilemap;
 		public var miniMap:FlxTilemap;
 		public var overlay:GrassOverlay;
@@ -61,6 +62,11 @@ package states
 			if (waterFlowCounter > 0.5){
 				waterFlowCounter = 0;
 				flowWater();
+			}
+			waterFlowFullScanCounter += FlxG.elapsed;
+			if (waterFlowFullScanCounter > 2){
+                waterFlowFullScanCounter = 0;
+				scanForWaterFlow();
 			}
 			tileCoords = tileCoordsOfPlayer();
 			tileCoordsFaced = tileCoordsPlayerIsFacing()
@@ -177,6 +183,7 @@ package states
 			var tileBecomes:int = Materials.dropped(held, tileKind);
 			if (tileBecomes != Materials.NOTHING){
 				setTileMaterial(pos, tileBecomes);
+				registerFlowingWaterTile(pos);
 			}
 			return tileBecomes;
 		}
@@ -229,6 +236,23 @@ package states
 			}
 			flowingWaterCoords = newFlowCoords;
 		}
+
+        private function scanForWaterFlow():void
+        {
+            var topLeft:FlxPoint = map.getScreenXY();
+            var tile0:FlxPoint = new FlxPoint(topLeft.x / TILE_SIZE_X, topLeft.y / TILE_SIZE_Y);
+            var widthInTiles:int = FlxG.width / TILE_SIZE_X ;
+            var heightInTiles:int = FlxG.height / TILE_SIZE_Y;
+            for (var i:int = 0; i <= heightInTiles; ++i){
+                for (var j:int = 0; j <= widthInTiles; ++j){
+                    var pos:FlxPoint = new FlxPoint(tile0.y + i, tile0.x + j);
+                    var material:int = map.getTile(pos.x, pos.y);
+                    if (material == Materials.WATER && adjacentTileOfMaterial(pos, Materials.HOLE)){
+                        // registerFlowingWaterTile(pos);
+                    }
+                }
+            }
+        }
 
     }
 }
