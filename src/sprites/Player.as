@@ -54,6 +54,7 @@ package	sprites
 			var mul:uint = 4;
 			acceleration.x = 0;
 			acceleration.y = 0;
+			var animationOverride:Boolean = FlxG.keys.pressed("UP") || FlxG.keys.pressed("DOWN");
 			drag.x = maxVelocity.x * (mul + 1);
 			drag.y = maxVelocity.y * (mul + 1);
 			if (state.gameState == GameStates.PLAYING)
@@ -61,22 +62,22 @@ package	sprites
                 var isMoving:Boolean = false;
 				if (FlxG.keys.pressed("LEFT")){
 					acceleration.x = -maxVelocity.x * mul;
-					play("LEFT");
+					if(!animationOverride) play("LEFT");
                     facing = LEFT;
                     isMoving = true;
-				}
+				} else
 				if (FlxG.keys.pressed("RIGHT")){
 					acceleration.x = maxVelocity.x * mul;
-					play("RIGHT");
+					if(!animationOverride) play("RIGHT");
                     facing = RIGHT;
                     isMoving = true;
-				}
+				} 
 				if (FlxG.keys.pressed("UP")){
 					acceleration.y = -maxVelocity.y * mul;
 					play("UP");
                     facing = UP;
                     isMoving = true;
-				}
+				} else
 				if (FlxG.keys.pressed("DOWN")){
 					acceleration.y = maxVelocity.y * mul;
 					play("DOWN");
