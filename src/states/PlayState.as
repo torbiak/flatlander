@@ -1,6 +1,7 @@
 package states
 {
 	import constants.*;
+	import util.LevelGenerator;
 	
 	import org.flixel.*;
 	
@@ -10,7 +11,7 @@ package states
     {	
 		public const TILE_SIZE_X:int = 16;
 		public const TILE_SIZE_Y:int = 16;
-		[Embed(source = '../../assets/100x100map.txt', mimeType = "application/octet-stream")]
+		[Embed(source = '../../assets/50x50map.txt', mimeType = "application/octet-stream")]
 		private static var Map:Class;
 		[Embed(source="../../assets/tiles.png")]
 		public static var Tiles:Class;
@@ -20,6 +21,7 @@ package states
 		public static var Particles:Class;
 
 		public var waterFlowCounter:Number = 0;
+		public var waterFlowFullScanCounter:Number = 0;
 		public var map:FlxTilemap;
 		public var miniMap:FlxTilemap;
 		public var overlay:GrassOverlay;
@@ -61,6 +63,11 @@ package states
 				waterFlowCounter = 0;
 				flowWater();
 			}
+			waterFlowFullScanCounter += FlxG.elapsed;
+			if (waterFlowFullScanCounter > 2){
+                waterFlowFullScanCounter = 0;
+				scanForWaterFlow();
+			}
 			tileCoords = tileCoordsOfPlayer();
 			tileCoordsFaced = tileCoordsPlayerIsFacing()
 
@@ -81,7 +88,7 @@ package states
 
 		public function initPlayer():void
 		{
-			player = new Player(20, 50);
+			player = new Player(25*TILE_SIZE_X, 22*TILE_SIZE_Y);
 			add(player);
    		}
 		
@@ -176,6 +183,7 @@ package states
 			var tileBecomes:int = Materials.dropped(held, tileKind);
 			if (tileBecomes != Materials.NOTHING){
 				setTileMaterial(pos, tileBecomes);
+				registerFlowingWaterTile(pos);
 			}
 			return tileBecomes;
 		}
@@ -228,6 +236,23 @@ package states
 			}
 			flowingWaterCoords = newFlowCoords;
 		}
+
+        private function scanForWaterFlow():void
+        {
+            var topLeft:FlxPoint = map.getScreenXY();
+            var tile0:FlxPoint = new FlxPoint(topLeft.x / TILE_SIZE_X, topLeft.y / TILE_SIZE_Y);
+            var widthInTiles:int = FlxG.width / TILE_SIZE_X ;
+            var heightInTiles:int = FlxG.height / TILE_SIZE_Y;
+            for (var i:int = 0; i <= heightInTiles; ++i){
+                for (var j:int = 0; j <= widthInTiles; ++j){
+                    var pos:FlxPoint = new FlxPoint(tile0.y + i, tile0.x + j);
+                    var material:int = map.getTile(pos.x, pos.y);
+                    if (material == Materials.WATER && adjacentTileOfMaterial(pos, Materials.HOLE)){
+                        // registerFlowingWaterTile(pos);
+                    }
+                }
+            }
+        }
 
     }
 }
