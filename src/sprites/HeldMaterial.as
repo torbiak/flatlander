@@ -36,7 +36,7 @@ package	sprites
 		{
 			if (state.gameState == GameStates.PLAYING)
 			{
-				var movementFactor:uint = 3;
+				var movementFactor:uint = 5;
 				if (action == PICKUP)
 				{
 					var playerx:uint = state.player.x + OFFSET_X;
