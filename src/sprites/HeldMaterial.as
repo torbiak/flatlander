@@ -20,6 +20,7 @@ package	sprites
 		public var _tileCoords:FlxPoint = new FlxPoint;
 		private var action:int;
 		private var inposition:Boolean = false;
+		public var emitter:FlxEmitter;
 
 		public function HeldMaterial(X:Number, Y:Number, materialKind:uint)
 		{
@@ -35,7 +36,7 @@ package	sprites
 		{
 			if (state.gameState == GameStates.PLAYING)
 			{
-				var movementFactor:uint = 2;
+				var movementFactor:uint = 3;
 				if (action == PICKUP)
 				{
 					var playerx:uint = state.player.x + OFFSET_X;
@@ -74,6 +75,14 @@ package	sprites
 						y < tiley + movementFactor && y > tiley - movementFactor)
 					{
 						exists  = false;
+						trace(frame)
+						if (frame == Materials.WATER)
+						{
+							trace(_kind);
+							state.emitter.x = x + 8;
+							state.emitter.y = y + 8;
+							state.emitter.start();
+						}
 					}
 					else
 					{

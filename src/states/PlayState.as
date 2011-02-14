@@ -1,6 +1,7 @@
 package states
 {
 	import constants.*;
+	import util.LevelGenerator;
 	
 	import org.flixel.*;
 	
@@ -10,7 +11,7 @@ package states
     {	
 		public const TILE_SIZE_X:int = 16;
 		public const TILE_SIZE_Y:int = 16;
-		[Embed(source = '../../assets/100x100map.txt', mimeType = "application/octet-stream")]
+		[Embed(source = '../../assets/50x50map.txt', mimeType = "application/octet-stream")]
 		private static var Map:Class;
 		[Embed(source="../../assets/tiles.png")]
 		public static var Tiles:Class;
@@ -81,7 +82,7 @@ package states
 
 		public function initPlayer():void
 		{
-			player = new Player(20, 50);
+			player = new Player(25*TILE_SIZE_X, 22*TILE_SIZE_Y);
 			add(player);
    		}
 		

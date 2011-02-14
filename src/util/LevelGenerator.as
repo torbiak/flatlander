@@ -9,7 +9,7 @@ package util
 	 */
 	public class LevelGenerator 
 	{
-		private static var levelSize:uint = 100;
+		private static var levelSize:uint = 50;
 		
 		public function LevelGenerator() 
 		{
@@ -67,17 +67,17 @@ package util
 			{
 				createPatch(array, 4);
 			}
-			for (k = 0; k < 3; k++)
+			for (k = 0; k < 1; k++)
 			{
 				createPatch(array, 5);
-			}
-			for (k = 0; k < 5; k++)
-			{
-				createPatch(array, 0);
 			}
 			for (k = 0; k < 1; k++)
 			{
 				createPatch(array, 1);
+			}
+			for (k = 0; k < 5; k++)
+			{
+				createPatch(array, 0);
 			}
 		
 			
