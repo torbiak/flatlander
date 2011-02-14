@@ -36,7 +36,7 @@ package	sprites
 		{
 			if (state.gameState == GameStates.PLAYING)
 			{
-				var movementFactor:uint = 3;
+				var movementFactor:uint = 5;
 				if (action == PICKUP)
 				{
 					var playerx:uint = state.player.x + OFFSET_X;
@@ -75,12 +75,10 @@ package	sprites
 						y < tiley + movementFactor && y > tiley - movementFactor)
 					{
 						exists  = false;
-						trace(frame)
 						if (frame == Materials.WATER)
 						{
-							trace(_kind);
-							state.emitter.x = x + 8;
-							state.emitter.y = y + 8;
+							state.emitter.x = _tileCoords.x + 8;
+							state.emitter.y = _tileCoords.y + 8;
 							state.emitter.start();
 						}
 					}
