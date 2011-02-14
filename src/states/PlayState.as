@@ -193,7 +193,9 @@ package states
 			if (tileBecomes != Materials.NOTHING){
 				setTileMaterial(pos, tileBecomes);
 				registerFlowingWaterTile(pos);
-                registerGrowingTreeTile(pos);
+				if(held == Materials.WATER) {
+					registerGrowingTreeTile(pos);
+				}
 			}
 			return tileBecomes;
 		}
