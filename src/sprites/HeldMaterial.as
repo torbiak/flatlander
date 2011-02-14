@@ -12,8 +12,8 @@ package	sprites
 		private static const DROP:int = 1;
 		
 		public static const OFFSET_X:int = -2;
-		public static const OFFSET_Y:int = -10;
-		[Embed(source="../../assets/tiles.png")]
+		public static const OFFSET_Y:int = -17;
+		[Embed(source="../../assets/icons.png")]
 		public static var Tiles:Class;
 		private var _kind:int;
 		public var state:PlayState;
@@ -26,7 +26,7 @@ package	sprites
 			super(X, Y);
 			_kind = materialKind;
 			state = FlxG.state as PlayState;
-			loadGraphic(Tiles, false, false, state.TILE_SIZE_X, state.TILE_SIZE_Y / 2);
+			loadGraphic(Tiles, false, false, state.TILE_SIZE_X, state.TILE_SIZE_Y);
 			frame = _kind;
 			exists = false;
 		}
