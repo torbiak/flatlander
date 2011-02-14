@@ -1,11 +1,12 @@
 package states
 {
 	import constants.*;
-	import util.LevelGenerator;
 	
 	import org.flixel.*;
 	
 	import sprites.*;
+	
+	import util.LevelGenerator;
  
     public class PlayState extends FlxState
     {	
@@ -120,9 +121,9 @@ package states
 			
 		}
 		
-		public function initEmitter()
+		public function initEmitter():void
 		{
-			const splashVel = 70;
+			const splashVel:int = 70;
 			
 			emitter = new FlxEmitter();
 
@@ -193,7 +194,9 @@ package states
 			if (tileBecomes != Materials.NOTHING){
 				setTileMaterial(pos, tileBecomes);
 				registerFlowingWaterTile(pos);
-                registerGrowingTreeTile(pos);
+                if (held == Materials.WATER){
+                    registerGrowingTreeTile(pos);
+                }
 			}
 			return tileBecomes;
 		}

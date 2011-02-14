@@ -91,6 +91,13 @@ package	sprites
                         drop();
                     }
 				}
+				if (FlxG.keys.justPressed("X")){
+                    if (heldMaterial.kind == Materials.NOTHING){
+                        pickup();
+                    } else {
+                        heldMaterial.discard();
+                    }
+                }
 			}
 			//Default object physics update
 			super.update();

@@ -102,17 +102,23 @@ package	sprites
 			super.update();
 		}
 
-		public function get kind():int
-		{
-			return _kind;
-		}
-		
+        public function discard():void
+        {
+            _kind = Materials.NOTHING;
+            exists = false;
+        }
+
 		public function set tileCoords(point:FlxPoint):void
 		{
 			_tileCoords.x = point.x * state.TILE_SIZE_X - state.TILE_SIZE_X/2;
 			_tileCoords.y = point.y * state.TILE_SIZE_Y - state.TILE_SIZE_Y/2;
 		}
 
+		public function get kind():int
+		{
+			return _kind;
+		}
+		
 		public function set kind(materialKind:int):void
 		{
 			trace("old: ", _kind, " new: ", materialKind);
