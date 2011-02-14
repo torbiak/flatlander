@@ -21,6 +21,7 @@ package states
 		public static var Particles:Class;
 
 		public var waterFlowCounter:Number = 0;
+		public var treeGrowCounter:Number = 0;
 		public var waterFlowFullScanCounter:Number = 0;
 		public var map:FlxTilemap;
 		public var miniMap:FlxTilemap;
@@ -30,6 +31,7 @@ package states
 		public var tileCoords:FlxPoint;
 		public var tileCoordsFaced:FlxPoint;
 		public var flowingWaterCoords:Array;
+        public var growingTreesCoords:Array;
 		public var emitter:FlxEmitter;
 		
         /**
@@ -52,6 +54,7 @@ package states
 			
 			add(miniMap);
 			flowingWaterCoords = [];
+            growingTreesCoords = [];
 			gameState = GameStates.PLAYING;
 			FlxG.followBounds(0, 0, map.widthInTiles * TILE_SIZE_X, map.heightInTiles * TILE_SIZE_Y);
         }
@@ -63,10 +66,16 @@ package states
 				waterFlowCounter = 0;
 				flowWater();
 			}
+			treeGrowCounter += FlxG.elapsed;
+			if (treeGrowCounter > 2){
+				treeGrowCounter = 0;
+				growTrees();
+			}
 			waterFlowFullScanCounter += FlxG.elapsed;
 			if (waterFlowFullScanCounter > 2){
                 waterFlowFullScanCounter = 0;
-				scanForWaterFlow();
+                // Broken...see function comment.
+				// scanForWaterFlow();
 			}
 			tileCoords = tileCoordsOfPlayer();
 			tileCoordsFaced = tileCoordsPlayerIsFacing()
@@ -184,6 +193,7 @@ package states
 			if (tileBecomes != Materials.NOTHING){
 				setTileMaterial(pos, tileBecomes);
 				registerFlowingWaterTile(pos);
+                registerGrowingTreeTile(pos);
 			}
 			return tileBecomes;
 		}
@@ -203,6 +213,14 @@ package states
 			}
 		}
 
+		private function registerGrowingTreeTile(pos:FlxPoint):void
+		{
+			var tileKind:int = map.getTile(pos.x, pos.y)
+			if (tileKind == Materials.TREE && adjacentTileOfMaterial(pos, Materials.GRASS)){
+				growingTreesCoords.push(pos);
+			}
+		}
+
 		private function adjacentTileOfMaterial(pos:FlxPoint, material:uint):FlxPoint
 		{
 			var offsets:Array = [-1, 1];
@@ -216,6 +234,21 @@ package states
 			}
 			return null;
 		}
+
+        private function growTrees():void
+        {
+			var pos:FlxPoint;
+			var grass:FlxPoint;
+			for (var i:String in growingTreesCoords){
+				pos = growingTreesCoords[i];
+				grass = adjacentTileOfMaterial(pos, Materials.GRASS);
+				while (grass){
+					setTileMaterial(grass, Materials.TREE);
+					grass = adjacentTileOfMaterial(pos, Materials.GRASS);
+				}
+			}
+            growingTreesCoords = [];
+        }
 
 
 		private function flowWater():void
@@ -247,7 +280,8 @@ package states
                 for (var j:int = 0; j <= widthInTiles; ++j){
                     var pos:FlxPoint = new FlxPoint(tile0.y + i, tile0.x + j);
                     var material:int = map.getTile(pos.x, pos.y);
-                    if (material == Materials.WATER && adjacentTileOfMaterial(pos, Materials.HOLE)){
+                    if ((material == Materials.WATER || material == Materials.DIRT) && adjacentTileOfMaterial(pos, Materials.HOLE)){
+                        // TODO: Crashes due to an infinite loop or something.
                         // registerFlowingWaterTile(pos);
                     }
                 }
